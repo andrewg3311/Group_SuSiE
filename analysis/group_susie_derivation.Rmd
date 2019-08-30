@@ -1,0 +1,131 @@
+---
+title: "Group SuSiE Derivation"
+author: "Andrew Goldstein"
+date: "August 29, 2019"
+output:
+  workflowr::wflow_html:
+    toc: false
+    code_folding: show
+editor_options:
+  chunk_output_type: console
+---
+
+# Introduction
+In regular SuSiE, the response $Y \in \mathbb{R}^n$ is assumed to be normally distributed with mean $\mathbf{Xb}$ and variance $\sigma^2 I_n$. The vector of effects $\mathbf{b} \in \mathbb{R}^p$ is assumed to be the sum of $L$ "single effects":
+$$
+\begin{aligned}
+\mathbf{b} = \sum_{l=1}^L \mathbf{b_l} \\
+\mathbf{b_l} = \mathbf{\gamma_l} b_l \\
+\mathbf{\gamma_l} \sim Mult(1, \mathbf{\pi}) \\
+b_l \sim \mathcal{N}(0, \sigma_{ol}^2)
+\end{aligned}
+$$
+That is, each of the $L$ components of $\mathbf{b}$ are each comprised of a single non-zero effect.
+
+An immediate problem with this formulation is that categorical predictors do not fit into this framework. For example, in order to represents a categorical predictor with 3 levels into our design matrix $\mathbf{X}$, we require two vectors (plus the intercept), and in order for our model to handle the categorical predictor properly, both variables must be included in the model simultaneously. In fact, this exact scenario is what we wish to do in the setting where we wish to use trees of order 2 as our predictors (a direct extension of SuSiE Stumps).
+
+In order to remedy the issue, I introduce Group SuSiE below (name pending).
+
+# Group SuSiE
+## Set-Up
+Instead of our standard design matrix $\mathbf{X} \in \mathbb{R}^{n \times p}$, suppose we have $p$ pre-defined groups of predictors, with $p_j, j \in \{1, \dots, p\}$ predictors in each group. Arrange these groups of predictors into separate design matrices, $\mathbf{X^j} \in \mathbb{R}^{n \times p_j}$. Then we can define our model as follows:
+$$
+\begin{aligned}
+Y = [X^1 \cdots X^p]
+\begin{bmatrix}
+\beta^1 \\
+\vdots \\ \beta^p
+\end{bmatrix} + \epsilon \\
+\epsilon \sim \mathcal{N}(\mathbf{0}, \sigma^2 I_n) \\
+\begin{bmatrix}
+\beta^1 \\
+\vdots \\ \beta^p
+\end{bmatrix} = \sum_{l=1}^L \begin{bmatrix}
+\beta_l^1 \\
+\vdots \\ \beta_l^p
+\end{bmatrix} := \sum_{l=1}^L \beta_l \\
+\begin{bmatrix}
+\beta_l^1 \\
+\vdots \\ \beta_l^p
+\end{bmatrix} = \gamma_l \circ \mathbf{b_l} \\
+\gamma_l \sim \text{"Group-Multinomial"}(1, \pi) \\
+\mathbf{b_l} \sim \mathcal{N}(\mathbf{0}, \sigma_{0l}^2 I_{p_j})
+\end{aligned}
+$$
+where "Group-Multinomial" is a distribution that returns a binary vector with 1's in the position of the group that is selected, group $j$ being selected with probability $\pi_j$.
+(Note: The notation for $\mathbf{b_l}$ is a bit weird, since in one instance it is a vector of length $p$, and the other it is a vector of length $p_j$)
+
+## Derivation of Updates
+As in regular SuSiE, we approximate the posterior distribution using variational Bayes, where each of the $L$ effects are independent, a posteriori. Below, we derive the CAVI updates for each effect, $\beta_l$. The notation can get a bit muddied. Below, I use $\mathbf{e^j} \in \mathbb{R}^p$ to refer to the binary vector with 1's in the positios of the variables include in group $j$, I use $\mathbf{c} \in \mathbb{R}^{p_j}$ to refer to the value for $\mathbf{b_l}$, and I use $\mathbf{c^j} \in \mathbb{R}^{p_j}$ to refer to the vector where all entries corresponding to variables outside of group $j$ are 0, and the sub-vector defined by taking the entries corresponding to the variables in group $j$ is $\mathbf{c}$.
+
+$$
+\begin{aligned}
+q_l(\beta_l = \mathbf{c^j} \circ \mathbf{e^j}) \propto \exp\Bigg\{\mathbb{E}_{-q_l}\Big[\log p(\beta_l = \mathbf{c^j} \circ \mathbf{e^j}) + \log p(Y|X, \beta_l = \mathbf{c^j} \circ \mathbf{e^j})\Big]\Bigg\} \propto \\
+
+\exp\Bigg\{\log(\pi_j) - \frac{p_j}{2}\log(2\pi\sigma_{0l}^2) - \frac{1}{2} \sum_{k=1}^{p_j} \frac{\mathbf{c}_k^2}{\sigma_{0l}^2} + \sum_{i=1}^n -\frac{1}{2} \log(2\pi\sigma^2) - \frac{1}{2\sigma^2} \mathbb{E}_{-q_l}\Big[\Big(Y_i - X_i^T(\mathbf{c^j} \circ \mathbf{e^j} + \sum_{k \ne l} \beta_k)\Big)^2\Big]\Bigg\} \propto \\
+
+\exp\Bigg\{\log(\pi_j) - \frac{p_j}{2} \log(2\pi\sigma_{ol}^2) - \frac{1}{2} \sum_{k=1}^{p_j} \frac{\mathbf{c}_k^2}{\sigma_{0l}^2} - \frac{1}{2} \sum_{i=1}^n \log(2\pi\sigma^2) + \frac{1}{\sigma^2}\Big[-2Y_i X_i^T(\mathbf{c^j} \circ \mathbf{e^j} + \sum_{k \ne l} \bar{\beta_k}) + \sum_{k=1}^{p_j} (\mathbf{c}_kX_{ik}^j)^2 + 2(\sum_{k=1}^{p_j}\mathbf{c}_k X_{ik}^j)(x_i^T\sum_{k \ne l} \bar{\beta_k})\Big]\Bigg\}  = \\
+
+\exp\Bigg\{\log(\pi_j) - \frac{1}{2} \Big[\mathbf{c}^T(\frac{1}{\sigma_{0l}^2}I_{p_j})\mathbf{c} + \mathbf{c}^T\Big(\sum_{i=1}^n diag(\frac{X_i^{j2}}{\sigma^2})\Big)\mathbf{c} - 2\mathbf{c}^T(\sum_{i=1}^n Y_i X_i^j) + 2\mathbf{c}^T\Big(\sum_{i=1}^n (X_i^T \sum_{k \ne l} \bar{\beta_k})X_i^j\Big)\Big] - \frac{p_j}{2} \log(2\pi\sigma_{0l}^2) - \frac{n}{2} \log(2\pi\sigma^2)\Bigg\} = \\
+
+\exp\Bigg\{\log(\pi_j) - \frac{1}{2}\Big[\mathbf{c}^Tdiag\Big(\frac{1}{\sigma_{0l}^2}\mathbf{1}_{p_j} + \frac{1}{\sigma^2} \sum_{i=1}^n X_i^{j2}\Big)\mathbf{c} - 2\mathbf{c}^T \Big(\sum_{i=1}^n (Y_i - X_i^T\sum_{k \ne l} \bar{\beta_k})X_i^j\Big)\Big] - \frac{p_j}{2} \log(2\pi\sigma_{0l}^2) - \frac{n}{2} \log(2\pi\sigma^2)\Bigg\} \propto \\
+
+[\text{Let} \quad \bar{r}_{i, l} := Y_i - X_i^T \sum_{k \ne l} \bar{\beta_k}, \quad \tau_{k, l} := \frac{1}{\sigma_{0l}^2} + \frac{1}{\sigma^2} \sum_{i=1}^nX_{ik}^{j2}] \propto \\
+
+\exp\Bigg\{\log(\pi_j) - \frac{1}{2} \Big[\Big(\mathbf{c} - diag(\frac{1}{\tau_l}) \sum_{i=1}^n \bar{r}_{i,l}X_i^j\Big)^T diag(\tau_l) \Big(\mathbf{c} - diag(\frac{1}{\tau_l}) \sum_{i=1}^n \bar{r}_{i,l}X_i^j\Big) - (\sum_{i=1}^n \bar{r}_{i,l} X_i^j)^T diag(\frac{1}{\tau_l})(\sum_{i=1}^n \bar{r}_{i,l} X_i^j)\Big] - \frac{p_j}{2} \log(2\pi) - \frac{p_j}{2}\log(\sigma_{0l}^2) \pm \frac{1}{2} \log(\prod_{k=1}^{p_j} \frac{1}{\tau_{k,l}})\Bigg\} = \\
+
+[\text{Let} \quad \sigma_{k, l}^2 := \frac{1}{\tau_{k, l}}, \quad \nu_{j, l} := \sum_{i=1}^n \bar{r}_{i, l} X_i^j] = \\
+
+\exp\Bigg\{\log(\pi_j) + \frac{1}{2} \sum_{k=1}^{p_j} \log(\frac{\sigma_{k,l}^2}{\sigma_{0l}^2}) + \frac{1}{2} \nu_{j,l}^T diag(\sigma_l^2) \nu_{j,l}\Bigg\}  \cdot \exp\Bigg\{\frac{-p_j}{2} \log(2\pi) - \frac{1}{2}\log(\prod_{k=1}^{p_j} \sigma_{k,l}^2) - \frac{1}{2} \Big[\Big(\mathbf{c} - diag(\sigma_l^2)\nu_{j,l}\Big)^T diag(\frac{1}{\sigma_l^2})\Big(\mathbf{c} - diag(\sigma_l^2)\nu_{j,l}\Big)\Big]\Bigg\} \\
+
+\therefore \gamma_l | Y \sim \text{"Group-Multinomial"}(1, \alpha_l) \quad \text{where} \quad \alpha_{l,j} \propto \pi_j \cdot \sqrt{\prod_{k=1}^{p_j} \frac{\sigma_{k,l}^2}{\sigma_{0l}^2}} \cdot \exp\Bigg\{\frac{1}{2} \nu_{j,l}^T diag(\sigma_{l}^2)\nu_{j,l}\Bigg\} \\
+\mathbf{b}_l | \gamma_l = j, Y \sim \mathcal{N}\Big(diag(\sigma_l^2)\nu_{j,l}, \; diag(\sigma_l^2)\Big)
+\end{aligned}
+$$
+
+It can be verified that in the case where each variable is its own group, then these updates revert back to the original SuSiE updates.
+
+
+# Applications
+In this section, I walk through some of the more immediate applications of Group SuSiE.
+
+## Categorical Variables
+The motivation for thinking about Group SuSiE was to have regular SuSiE be able to handle categorical variables. For instance, suppose we have a variable with three categorical levels. Then in order to include these variables in our design matrix $X$, we need to use 2 vectors (plus the intercept). In order for the categorical variable as a whole to be included in our model, we need to be able to include both of these binary variables simultaneously. However, regular SuSiE does not allow us to achieve this. But if we put these two binary variables together into a group, then Group SuSiE can include/exclude the entire group simultaneously.
+
+*CAUTION*
+I believe that in this context, the design matrix should use the "sum contrast" rather than the "treatment contrast." Since we are placing a prior on the effects, then if we were to use the treatment contrast, our model would not be invariant to re-labelling of the baseline group (I think, since the baseline gets "absorbed" into the intercept, which is given a different prior). Instead, if we use the sum contrast, our model should be invariant to re-labelling.
+
+### Order-2 Trees
+A direct application of including categorical predictors with 3 groups is to extend SuSiE Stumps to include trees of order 2. We can represent the tree as a categorical variable with 3 groups.
+
+## Gene Set Enrichment (?)
+Another potential application of Group SuSiE could be gene set enrichment analysis. If we have pre-specified gene sets (e.g. GO terms), then we can group our variables (e.g. gene expression measurements) based on these gene sets.
+
+## Polynomials of Variables
+Another application could be to include higher-order terms of our variables (e.g. if our predictor is $x$, then we could include $x^2$, $x^3$, etc). As we learn in our standard linear regression classes, we should always include lower-order terms when we add higher-order terms. Thus, we can create groups of variables $G_j$ as:
+$$
+\begin{aligned}
+G_1 := \{x\} \\
+G_2 := \{x, \; x^2\} \\
+G_3 := \{x, \; x^2, \; x^3\}
+\end{aligned}
+$$
+etc.
+
+
+# Questions/Issues
+The section below outlines some of the more immediate questions that I have had.
+
+## Correlations Between Variables Within a Group
+In the context of gene set enrichment analysis specifically, we expect gene expression within a gene set to be highly correlated. I do not know if this method will be able to handle a group of highly correlated variables. Especially since once a group is "selected," there is no further penalty placed on the number of non-zero effects within the group.
+
+## Regularizer on Group Size (Prior Probability vs. Prior Variance)
+If the prior probability on each group being non-zero, $\pi_j$, is the same for all groups, and the prior variance of the effects, $\sigma_{0l}^2$, does not vary between groups, then if one group is a superset of another, the larger group will always have a higher posterior probability of being non-zero. This is a problem, especially for hierarchical groups (e.g. GO terms). My proposal to help remedy this is to place a lower prior probability on larger groups being non-zero.
+
+In seeing the potential application to use SuSiE using a basis of trees of order 2, I took inspiration from the prior used in [BART: Bayesian Additive Regression Trees](https://projecteuclid.org/download/pdfview_1/euclid.aoas/1273584455). Here, they place a prior on the probability that a node of the tree at depth $d$ is non-terminal: $p(\text{node at depth } d \text{ is non-terminal}) = \alpha(1 + d)^{-\beta}, \quad \alpha \in (0, 1), \; \beta \in [0, \infty)$. There is a correspondence between the number of terminal nodes of a tree and the number of levels in a categorical variable required to represent that tree. As a result, I believe it is worth thinking about how to modify this component of the BART prior to choose default values of $\pi_j$ based on the number of variables in group $j$.
+
+## Overlap Between Groups
+Nowhere in the derivation of the updates does it require groups to be disjoint. However, I am not sure if any issues will arise if the groups have overlapping variables.
+
+## Interpretation of Credible Sets
+In regular SuSiE, the approximate posterior distribution leads to the easy interpretation of credible sets of variables. However, this interpretation is somewhat lost in Group SuSiE, since now we consider credible sets of groups of variables.
