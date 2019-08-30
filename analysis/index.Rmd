@@ -9,3 +9,5 @@ editor_options:
 ---
 
 Welcome to my research website.
+
+The page showing the explanation and derivation of Grup SuSiE can be found [here](group_susie_derivation.html)

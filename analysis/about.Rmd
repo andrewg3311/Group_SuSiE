@@ -7,4 +7,4 @@ editor_options:
   chunk_output_type: console
 ---
 
-Describe your project.
+This project aims to extend SuSiE to assign effects to pre-specified groups of variables, rather than single variables. The motivation for this line of work was to try to allow SuSiE to handle catagorical predictors (which can be used for SuSiE stumps with trees of order 2 or more). However, there may be further potential applications, e.g. gene set enrichment analysis.
