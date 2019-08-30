@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Andrew Goldstein" />
+
+<meta name="date" content="2019-08-29" />
+
+<title>Group SuSiE Derivation</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Group_SuSiE</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Group SuSiE Derivation</h1>
+<h4 class="author">Andrew Goldstein</h4>
+<h4 class="date">August 29, 2019</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2019-08-30
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>Group_SuSiE/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.4.0). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomandrewg3311GroupSuSiEtree3b87bfc32f83947b7d481b2013dcd0316ab5a9bbtargetblank3b87bfca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/andrewg3311/Group_SuSiE/tree/3b87bfc32f83947b7d481b2013dcd0316ab5a9bb" target="_blank">3b87bfc</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomandrewg3311GroupSuSiEtree3b87bfc32f83947b7d481b2013dcd0316ab5a9bbtargetblank3b87bfca" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Unstaged changes:
+    Modified:   analysis/about.Rmd
+    Modified:   analysis/index.Rmd
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the R Markdown and HTML files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view them.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/andrewg3311/Group_SuSiE/blob/3b87bfc32f83947b7d481b2013dcd0316ab5a9bb/analysis/group_susie_derivation.Rmd" target="_blank">3b87bfc</a>
+</td>
+<td>
+Andrew Goldstein
+</td>
+<td>
+2019-08-30
+</td>
+<td>
+First build of Group SuSiE explanation
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>In regular SuSiE, the response <span class="math inline">\(Y \in \mathbb{R}^n\)</span> is assumed to be normally distributed with mean <span class="math inline">\(\mathbf{Xb}\)</span> and variance <span class="math inline">\(\sigma^2 I_n\)</span>. The vector of effects <span class="math inline">\(\mathbf{b} \in \mathbb{R}^p\)</span> is assumed to be the sum of <span class="math inline">\(L\)</span> “single effects”: <span class="math display">\[
+\begin{aligned}
+\mathbf{b} = \sum_{l=1}^L \mathbf{b_l} \\
+\mathbf{b_l} = \mathbf{\gamma_l} b_l \\
+\mathbf{\gamma_l} \sim Mult(1, \mathbf{\pi}) \\
+b_l \sim \mathcal{N}(0, \sigma_{ol}^2)
+\end{aligned}
+\]</span> That is, each of the <span class="math inline">\(L\)</span> components of <span class="math inline">\(\mathbf{b}\)</span> are each comprised of a single non-zero effect.</p>
+<p>An immediate problem with this formulation is that categorical predictors do not fit into this framework. For example, in order to represents a categorical predictor with 3 levels into our design matrix <span class="math inline">\(\mathbf{X}\)</span>, we require two vectors (plus the intercept), and in order for our model to handle the categorical predictor properly, both variables must be included in the model simultaneously. In fact, this exact scenario is what we wish to do in the setting where we wish to use trees of order 2 as our predictors (a direct extension of SuSiE Stumps).</p>
+<p>In order to remedy the issue, I introduce Group SuSiE below (name pending).</p>
+</div>
+<div id="group-susie" class="section level1">
+<h1>Group SuSiE</h1>
+<div id="set-up" class="section level2">
+<h2>Set-Up</h2>
+<p>Instead of our standard design matrix <span class="math inline">\(\mathbf{X} \in \mathbb{R}^{n \times p}\)</span>, suppose we have <span class="math inline">\(p\)</span> pre-defined groups of predictors, with <span class="math inline">\(p_j, j \in \{1, \dots, p\}\)</span> predictors in each group. Arrange these groups of predictors into separate design matrices, <span class="math inline">\(\mathbf{X^j} \in \mathbb{R}^{n \times p_j}\)</span>. Then we can define our model as follows: <span class="math display">\[
+\begin{aligned}
+Y = [X^1 \cdots X^p]
+\begin{bmatrix}
+\beta^1 \\
+\vdots \\ \beta^p
+\end{bmatrix} + \epsilon \\
+\epsilon \sim \mathcal{N}(\mathbf{0}, \sigma^2 I_n) \\
+\begin{bmatrix}
+\beta^1 \\
+\vdots \\ \beta^p
+\end{bmatrix} = \sum_{l=1}^L \begin{bmatrix}
+\beta_l^1 \\
+\vdots \\ \beta_l^p
+\end{bmatrix} := \sum_{l=1}^L \beta_l \\
+\begin{bmatrix}
+\beta_l^1 \\
+\vdots \\ \beta_l^p
+\end{bmatrix} = \gamma_l \circ \mathbf{b_l} \\
+\gamma_l \sim \text{&quot;Group-Multinomial&quot;}(1, \pi) \\
+\mathbf{b_l} \sim \mathcal{N}(\mathbf{0}, \sigma_{0l}^2 I_{p_j})
+\end{aligned}
+\]</span> where “Group-Multinomial” is a distribution that returns a binary vector with 1’s in the position of the group that is selected, group <span class="math inline">\(j\)</span> being selected with probability <span class="math inline">\(\pi_j\)</span>. (Note: The notation for <span class="math inline">\(\mathbf{b_l}\)</span> is a bit weird, since in one instance it is a vector of length <span class="math inline">\(p\)</span>, and the other it is a vector of length <span class="math inline">\(p_j\)</span>)</p>
+</div>
+<div id="derivation-of-updates" class="section level2">
+<h2>Derivation of Updates</h2>
+<p>As in regular SuSiE, we approximate the posterior distribution using variational Bayes, where each of the <span class="math inline">\(L\)</span> effects are independent, a posteriori. Below, we derive the CAVI updates for each effect, <span class="math inline">\(\beta_l\)</span>. The notation can get a bit muddied. Below, I use <span class="math inline">\(\mathbf{e^j} \in \mathbb{R}^p\)</span> to refer to the binary vector with 1’s in the positios of the variables include in group <span class="math inline">\(j\)</span>, I use <span class="math inline">\(\mathbf{c} \in \mathbb{R}^{p_j}\)</span> to refer to the value for <span class="math inline">\(\mathbf{b_l}\)</span>, and I use <span class="math inline">\(\mathbf{c^j} \in \mathbb{R}^{p_j}\)</span> to refer to the vector where all entries corresponding to variables outside of group <span class="math inline">\(j\)</span> are 0, and the sub-vector defined by taking the entries corresponding to the variables in group <span class="math inline">\(j\)</span> is <span class="math inline">\(\mathbf{c}\)</span>.</p>
+<p>$$ \begin{aligned} q_l(<em>l =  ) {</em>{-q_l}} \</p>
+<p>{(<em>j) - (2</em>{0l}^2) -  <em>{k=1}^{p_j}  + </em>{i=1}^n - (2^2) -  _{-q_l}} \</p>
+<p>{(<em>j) -  (2</em>{ol}^2) -  <em>{k=1}^{p_j}  -  </em>{i=1}^n (2^2) + } = \</p>
+<p>{(<em>j) -  -  (2</em>{0l}^2) -  (2^2)} = \</p>
+<p>{(<em>j) - -  (2</em>{0l}^2) -  (2^2)} \</p>
+<p>[ {r}<em>{i, l} := Y_i - X_i^T </em>{k l} {<em>k}, </em>{k, l} :=  +  _{i=1}<sup>nX_{ik}</sup>{j2}] \</p>
+<p>{(<em>j) -  -  (2) - (</em>{0l}^2)  (_{k=1}^{p_j} )} = \</p>
+<p>[ <em>{k, l}^2 := , </em>{j, l} := <em>{i=1}^n {r}</em>{i, l} X_i^j] = \</p>
+<p>{(<em>j) +  </em>{k=1}^{p_j} () +  <em>{j,l}^T diag(<em>l^2) </em>{j,l}} { (2) - (</em>{k=1}^{p_j} _{k,l}^2) -  } \</p>
+<p><em>l | Y (1, <em>l)  </em>{l,j} <em>j  { </em>{j,l}^T diag(</em>{l}^2)_{j,l}} \ _l | _l = j, Y (diag(<em>l^2)</em>{j,l}, ; diag(_l^2)) \end{aligned} $$</p>
+<p>It can be verified that in the case where each variable is its own group, then these updates revert back to the original SuSiE updates.</p>
+</div>
+</div>
+<div id="applications" class="section level1">
+<h1>Applications</h1>
+<p>In this section, I walk through some of the more immediate applications of Group SuSiE.</p>
+<div id="categorical-variables" class="section level2">
+<h2>Categorical Variables</h2>
+<p>The motivation for thinking about Group SuSiE was to have regular SuSiE be able to handle categorical variables. For instance, suppose we have a variable with three categorical levels. Then in order to include these variables in our design matrix <span class="math inline">\(X\)</span>, we need to use 2 vectors (plus the intercept). In order for the categorical variable as a whole to be included in our model, we need to be able to include both of these binary variables simultaneously. However, regular SuSiE does not allow us to achieve this. But if we put these two binary variables together into a group, then Group SuSiE can include/exclude the entire group simultaneously.</p>
+<p><em>CAUTION</em> I believe that in this context, the design matrix should use the “sum contrast” rather than the “treatment contrast.” Since we are placing a prior on the effects, then if we were to use the treatment contrast, our model would not be invariant to re-labelling of the baseline group (I think, since the baseline gets “absorbed” into the intercept, which is given a different prior). Instead, if we use the sum contrast, our model should be invariant to re-labelling.</p>
+<div id="order-2-trees" class="section level3">
+<h3>Order-2 Trees</h3>
+<p>A direct application of including categorical predictors with 3 groups is to extend SuSiE Stumps to include trees of order 2. We can represent the tree as a categorical variable with 3 groups.</p>
+</div>
+</div>
+<div id="gene-set-enrichment" class="section level2">
+<h2>Gene Set Enrichment (?)</h2>
+<p>Another potential application of Group SuSiE could be gene set enrichment analysis. If we have pre-specified gene sets (e.g. GO terms), then we can group our variables (e.g. gene expression measurements) based on these gene sets.</p>
+</div>
+<div id="polynomials-of-variables" class="section level2">
+<h2>Polynomials of Variables</h2>
+<p>Another application could be to include higher-order terms of our variables (e.g. if our predictor is <span class="math inline">\(x\)</span>, then we could include <span class="math inline">\(x^2\)</span>, <span class="math inline">\(x^3\)</span>, etc). As we learn in our standard linear regression classes, we should always include lower-order terms when we add higher-order terms. Thus, we can create groups of variables <span class="math inline">\(G_j\)</span> as: <span class="math display">\[
+\begin{aligned}
+G_1 := \{x\} \\
+G_2 := \{x, \; x^2\} \\
+G_3 := \{x, \; x^2, \; x^3\}
+\end{aligned}
+\]</span> etc.</p>
+</div>
+</div>
+<div id="questionsissues" class="section level1">
+<h1>Questions/Issues</h1>
+<p>The section below outlines some of the more immediate questions that I have had.</p>
+<div id="correlations-between-variables-within-a-group" class="section level2">
+<h2>Correlations Between Variables Within a Group</h2>
+<p>In the context of gene set enrichment analysis specifically, we expect gene expression within a gene set to be highly correlated. I do not know if this method will be able to handle a group of highly correlated variables. Especially since once a group is “selected,” there is no further penalty placed on the number of non-zero effects within the group.</p>
+</div>
+<div id="regularizer-on-group-size-prior-probability-vs.prior-variance" class="section level2">
+<h2>Regularizer on Group Size (Prior Probability vs. Prior Variance)</h2>
+<p>If the prior probability on each group being non-zero, <span class="math inline">\(\pi_j\)</span>, is the same for all groups, and the prior variance of the effects, <span class="math inline">\(\sigma_{0l}^2\)</span>, does not vary between groups, then if one group is a superset of another, the larger group will always have a higher posterior probability of being non-zero. This is a problem, especially for hierarchical groups (e.g. GO terms). My proposal to help remedy this is to place a lower prior probability on larger groups being non-zero.</p>
+<p>In seeing the potential application to use SuSiE using a basis of trees of order 2, I took inspiration from the prior used in <a href="https://projecteuclid.org/download/pdfview_1/euclid.aoas/1273584455">BART: Bayesian Additive Regression Trees</a>. Here, they place a prior on the probability that a node of the tree at depth <span class="math inline">\(d\)</span> is non-terminal: <span class="math inline">\(p(\text{node at depth } d \text{ is non-terminal}) = \alpha(1 + d)^{-\beta}, \quad \alpha \in (0, 1), \; \beta \in [0, \infty)\)</span>. There is a correspondence between the number of terminal nodes of a tree and the number of levels in a categorical variable required to represent that tree. As a result, I believe it is worth thinking about how to modify this component of the BART prior to choose default values of <span class="math inline">\(\pi_j\)</span> based on the number of variables in group <span class="math inline">\(j\)</span>.</p>
+</div>
+<div id="overlap-between-groups" class="section level2">
+<h2>Overlap Between Groups</h2>
+<p>Nowhere in the derivation of the updates does it require groups to be disjoint. However, I am not sure if any issues will arise if the groups have overlapping variables.</p>
+</div>
+<div id="interpretation-of-credible-sets" class="section level2">
+<h2>Interpretation of Credible Sets</h2>
+<p>In regular SuSiE, the approximate posterior distribution leads to the easy interpretation of credible sets of variables. However, this interpretation is somewhat lost in Group SuSiE, since now we consider credible sets of groups of variables.</p>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
