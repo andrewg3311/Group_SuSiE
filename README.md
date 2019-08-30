@@ -1,5 +1,8 @@
 # Group_SuSiE
 
-A [workflowr][] project.
+This site aims to explore modifying SuSiE to allow groups of variables.
 
-[workflowr]: https://github.com/jdblischak/workflowr
+For the website, click [here][]
+
+[here]: https://andrewg3311.github.io/Group_SuSiE/
+
