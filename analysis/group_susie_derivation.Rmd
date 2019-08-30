@@ -61,23 +61,14 @@ As in regular SuSiE, we approximate the posterior distribution using variational
 $$
 \begin{aligned}
 q_l(\beta_l = \mathbf{c^j} \circ \mathbf{e^j}) \propto \exp\Bigg\{\mathbb{E}_{-q_l}\Big[\log p(\beta_l = \mathbf{c^j} \circ \mathbf{e^j}) + \log p(Y|X, \beta_l = \mathbf{c^j} \circ \mathbf{e^j})\Big]\Bigg\} \propto \\
-
 \exp\Bigg\{\log(\pi_j) - \frac{p_j}{2}\log(2\pi\sigma_{0l}^2) - \frac{1}{2} \sum_{k=1}^{p_j} \frac{\mathbf{c}_k^2}{\sigma_{0l}^2} + \sum_{i=1}^n -\frac{1}{2} \log(2\pi\sigma^2) - \frac{1}{2\sigma^2} \mathbb{E}_{-q_l}\Big[\Big(Y_i - X_i^T(\mathbf{c^j} \circ \mathbf{e^j} + \sum_{k \ne l} \beta_k)\Big)^2\Big]\Bigg\} \propto \\
-
 \exp\Bigg\{\log(\pi_j) - \frac{p_j}{2} \log(2\pi\sigma_{ol}^2) - \frac{1}{2} \sum_{k=1}^{p_j} \frac{\mathbf{c}_k^2}{\sigma_{0l}^2} - \frac{1}{2} \sum_{i=1}^n \log(2\pi\sigma^2) + \frac{1}{\sigma^2}\Big[-2Y_i X_i^T(\mathbf{c^j} \circ \mathbf{e^j} + \sum_{k \ne l} \bar{\beta_k}) + \sum_{k=1}^{p_j} (\mathbf{c}_kX_{ik}^j)^2 + 2(\sum_{k=1}^{p_j}\mathbf{c}_k X_{ik}^j)(x_i^T\sum_{k \ne l} \bar{\beta_k})\Big]\Bigg\}  = \\
-
 \exp\Bigg\{\log(\pi_j) - \frac{1}{2} \Big[\mathbf{c}^T(\frac{1}{\sigma_{0l}^2}I_{p_j})\mathbf{c} + \mathbf{c}^T\Big(\sum_{i=1}^n diag(\frac{X_i^{j2}}{\sigma^2})\Big)\mathbf{c} - 2\mathbf{c}^T(\sum_{i=1}^n Y_i X_i^j) + 2\mathbf{c}^T\Big(\sum_{i=1}^n (X_i^T \sum_{k \ne l} \bar{\beta_k})X_i^j\Big)\Big] - \frac{p_j}{2} \log(2\pi\sigma_{0l}^2) - \frac{n}{2} \log(2\pi\sigma^2)\Bigg\} = \\
-
 \exp\Bigg\{\log(\pi_j) - \frac{1}{2}\Big[\mathbf{c}^Tdiag\Big(\frac{1}{\sigma_{0l}^2}\mathbf{1}_{p_j} + \frac{1}{\sigma^2} \sum_{i=1}^n X_i^{j2}\Big)\mathbf{c} - 2\mathbf{c}^T \Big(\sum_{i=1}^n (Y_i - X_i^T\sum_{k \ne l} \bar{\beta_k})X_i^j\Big)\Big] - \frac{p_j}{2} \log(2\pi\sigma_{0l}^2) - \frac{n}{2} \log(2\pi\sigma^2)\Bigg\} \propto \\
-
 [\text{Let} \quad \bar{r}_{i, l} := Y_i - X_i^T \sum_{k \ne l} \bar{\beta_k}, \quad \tau_{k, l} := \frac{1}{\sigma_{0l}^2} + \frac{1}{\sigma^2} \sum_{i=1}^nX_{ik}^{j2}] \propto \\
-
 \exp\Bigg\{\log(\pi_j) - \frac{1}{2} \Big[\Big(\mathbf{c} - diag(\frac{1}{\tau_l}) \sum_{i=1}^n \bar{r}_{i,l}X_i^j\Big)^T diag(\tau_l) \Big(\mathbf{c} - diag(\frac{1}{\tau_l}) \sum_{i=1}^n \bar{r}_{i,l}X_i^j\Big) - (\sum_{i=1}^n \bar{r}_{i,l} X_i^j)^T diag(\frac{1}{\tau_l})(\sum_{i=1}^n \bar{r}_{i,l} X_i^j)\Big] - \frac{p_j}{2} \log(2\pi) - \frac{p_j}{2}\log(\sigma_{0l}^2) \pm \frac{1}{2} \log(\prod_{k=1}^{p_j} \frac{1}{\tau_{k,l}})\Bigg\} = \\
-
 [\text{Let} \quad \sigma_{k, l}^2 := \frac{1}{\tau_{k, l}}, \quad \nu_{j, l} := \sum_{i=1}^n \bar{r}_{i, l} X_i^j] = \\
-
 \exp\Bigg\{\log(\pi_j) + \frac{1}{2} \sum_{k=1}^{p_j} \log(\frac{\sigma_{k,l}^2}{\sigma_{0l}^2}) + \frac{1}{2} \nu_{j,l}^T diag(\sigma_l^2) \nu_{j,l}\Bigg\}  \cdot \exp\Bigg\{\frac{-p_j}{2} \log(2\pi) - \frac{1}{2}\log(\prod_{k=1}^{p_j} \sigma_{k,l}^2) - \frac{1}{2} \Big[\Big(\mathbf{c} - diag(\sigma_l^2)\nu_{j,l}\Big)^T diag(\frac{1}{\sigma_l^2})\Big(\mathbf{c} - diag(\sigma_l^2)\nu_{j,l}\Big)\Big]\Bigg\} \\
-
 \therefore \gamma_l | Y \sim \text{"Group-Multinomial"}(1, \alpha_l) \quad \text{where} \quad \alpha_{l,j} \propto \pi_j \cdot \sqrt{\prod_{k=1}^{p_j} \frac{\sigma_{k,l}^2}{\sigma_{0l}^2}} \cdot \exp\Bigg\{\frac{1}{2} \nu_{j,l}^T diag(\sigma_{l}^2)\nu_{j,l}\Bigg\} \\
 \mathbf{b}_l | \gamma_l = j, Y \sim \mathcal{N}\Big(diag(\sigma_l^2)\nu_{j,l}, \; diag(\sigma_l^2)\Big)
 \end{aligned}
