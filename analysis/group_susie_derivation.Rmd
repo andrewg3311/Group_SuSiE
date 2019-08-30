@@ -4,10 +4,7 @@ author: "Andrew Goldstein"
 date: "August 29, 2019"
 output:
   workflowr::wflow_html:
-    toc: false
     code_folding: show
-editor_options:
-  chunk_output_type: console
 ---
 
 # Introduction
