@@ -442,10 +442,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomandrewg3311GroupSuSiEtree250885387c6a7aa0ddbf2c00adc1c76883ffbeebtargetblank2508853a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/andrewg3311/Group_SuSiE/tree/250885387c6a7aa0ddbf2c00adc1c76883ffbeeb" target="_blank">2508853</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomandrewg3311GroupSuSiEtree50ebe43432691d4032aca6106545c9c9d1b83378targetblank50ebe43a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/andrewg3311/Group_SuSiE/tree/50ebe43432691d4032aca6106545c9c9d1b83378" target="_blank">50ebe43</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomandrewg3311GroupSuSiEtree250885387c6a7aa0ddbf2c00adc1c76883ffbeebtargetblank2508853a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomandrewg3311GroupSuSiEtree50ebe43432691d4032aca6106545c9c9d1b83378targetblank50ebe43a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -489,6 +489,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/andrewg3311/Group_SuSiE/blob/50ebe43432691d4032aca6106545c9c9d1b83378/analysis/group_susie_derivation.Rmd" target="_blank">50ebe43</a>
+</td>
+<td>
+Andrew Goldstein
+</td>
+<td>
+2019-09-01
+</td>
+<td>
+Making ‘CAUTION’ bold instead of italics
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/andrewg3311/Group_SuSiE/f14ddafe9b92ded3c48e2f39310d8e6723b65667/docs/group_susie_derivation.html" target="_blank">f14ddaf</a>
+</td>
+<td>
+Andrew Goldstein
+</td>
+<td>
+2019-09-01
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -734,7 +768,8 @@ q_l(\beta_l = \mathbf{c^j} \circ \mathbf{e^j}) \propto \exp\Bigg\{\mathbb{E}_{-q
 <div id="categorical-variables" class="section level2">
 <h2>Categorical Variables</h2>
 <p>The motivation for thinking about Group SuSiE was to have regular SuSiE be able to handle categorical variables. For instance, suppose we have a variable with three categorical levels. Then in order to include these variables in our design matrix <span class="math inline">\(X\)</span>, we need to use 2 vectors (plus the intercept). In order for the categorical variable as a whole to be included in our model, we need to be able to include both of these binary variables simultaneously. However, regular SuSiE does not allow us to achieve this. But if we put these two binary variables together into a group, then Group SuSiE can include/exclude the entire group simultaneously.</p>
-<p><em>CAUTION</em> I believe that in this context, the design matrix should use the “sum contrast” rather than the “treatment contrast.” Since we are placing a prior on the effects, then if we were to use the treatment contrast, our model would not be invariant to re-labelling of the baseline group (I think, since the baseline gets “absorbed” into the intercept, which is given a different prior). Instead, if we use the sum contrast, our model should be invariant to re-labelling.</p>
+<p><strong>CAUTION</strong></p>
+<p>I believe that in this context, the design matrix should use the “sum contrast” rather than the “treatment contrast.” Since we are placing a prior on the effects, then if we were to use the treatment contrast, our model would not be invariant to re-labelling of the baseline group (I think, since the baseline gets “absorbed” into the intercept, which is given a different prior). Instead, if we use the sum contrast, our model should be invariant to re-labelling.</p>
 <p>For example, consider the case where we have a single categorical predictor with 3 levels. Suppose that the residual variance is very small, so the responses in each group are very close to their expectation. Suppose that the mean response for group 1 is 100, for group 2 is 200, and for group 3 is 300. Ideally, we want our model to be invariant to re-labelling the groups, since the group labels are arbitrary. If we were to use treatment coding for our variable, then the intercept would correspond to the group 1 mean. Since the intercept has a flat prior, then the estimate for the intercept will be very close to 100. The coefficient for group 2 (respectively, group 3) will correspond to the difference between the mean response in group 1 and group 2 (respectively, group 3). Since our prior for these effects has a smaller variance, the estimate for the group 2 coefficient will be shrunk from 100 (<span class="math inline">\(100 = 200 - 100\)</span>) towards 0 (e.g. 50), and the estimate for the group 3 coefficient will be shrunk from 200 (<span class="math inline">\(200 = 300 - 100\)</span>) towards 0 (e.g. 100). However, suppose we re-order the group labels so that now group 3 is the baseline. So the estimate for the intercept will be very close to 300, the estimate for the group 1 coefficient will be shrunk from -200 to 0 (e.g. -100), and the estimate for the group 2 coefficient will be shrunk from -100 to 0 (e.g. -50). Clearly, these two fitted models are different.</p>
 <p>If, instead, we use the sum-to-zero constraint, then the intercept will correspond to the overall mean, which is invariant to re-labelling of the groups. I believe it will be the case that the coefficient for the groups (interpreted as the difference between the overall mean and the group mean) will also be invariant to re-lablling. However, I need to think a little mode (e.g. group 3 coefficient is the negative sum of the first and second coefficients, but if we re-label and estimate the group 3 coefficient normally, would we get the same thing?).</p>
 <p>Alternatively, it might be best to instead represent a categorical predictor with <span class="math inline">\(p_j\)</span> levels with <span class="math inline">\(p_j\)</span> indicator variables denoting group membership. This will definitely be invariant to re-labelling of the groups. However, I’m not sure if/how that will act, since including 3 variables instead of the canonical 2 makes the model matrix rank deficient (due to the intercept column).</p>
