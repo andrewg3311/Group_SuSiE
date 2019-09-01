@@ -87,6 +87,8 @@ For example, consider the case where we have a single categorical predictor with
 
 If, instead, we use the sum-to-zero constraint, then the intercept will correspond to the overall mean, which is invariant to re-labelling of the groups. I believe it will be the case that the coefficient for the groups (interpreted as the difference between the overall mean and the group mean) will also be invariant to re-lablling. However, I need to think a little mode (e.g. group 3 coefficient is the negative sum of the first and second coefficients, but if we re-label and estimate the group 3 coefficient normally, would we get the same thing?).
 
+Alternatively, it might be best to instead represent a categorical predictor with $p_j$ levels with $p_j$ indicator variables denoting group membership. This will definitely be invariant to re-labelling of the groups. However, I'm not sure if/how that will act, since including 3 variables instead of the canonical 2 makes the model matrix rank deficient (due to the intercept column).
+
 ### Order-2 Trees
 A direct application of including categorical predictors with 3 groups is to extend SuSiE Stumps to include trees of order 2. We can represent the tree as a categorical variable with 3 groups.
 
