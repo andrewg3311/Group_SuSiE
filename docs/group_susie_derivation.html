@@ -442,10 +442,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomandrewg3311GroupSuSiEtree409a4124b4b60e17bf82e60a3f9a6ad2931fb61atargetblank409a412a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/andrewg3311/Group_SuSiE/tree/409a4124b4b60e17bf82e60a3f9a6ad2931fb61a" target="_blank">409a412</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomandrewg3311GroupSuSiEtree676fcf62feda0e19eef5efd200ff33d257ea692ctargetblank676fcf6a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/andrewg3311/Group_SuSiE/tree/676fcf62feda0e19eef5efd200ff33d257ea692c" target="_blank">676fcf6</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomandrewg3311GroupSuSiEtree409a4124b4b60e17bf82e60a3f9a6ad2931fb61atargetblank409a412a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomandrewg3311GroupSuSiEtree676fcf62feda0e19eef5efd200ff33d257ea692ctargetblank676fcf6a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -489,6 +489,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/andrewg3311/Group_SuSiE/blob/676fcf62feda0e19eef5efd200ff33d257ea692c/analysis/group_susie_derivation.Rmd" target="_blank">676fcf6</a>
+</td>
+<td>
+Andrew Goldstein
+</td>
+<td>
+2019-09-02
+</td>
+<td>
+Modifying notation so number of groups is now ‘q’ instead of ‘p’ (to avoid confusion w/ total number of variables)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/andrewg3311/Group_SuSiE/6a087f38ddf3b93788a76f39971bc0b335532b9b/docs/group_susie_derivation.html" target="_blank">6a087f3</a>
+</td>
+<td>
+Andrew Goldstein
+</td>
+<td>
+2019-09-02
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -807,7 +841,7 @@ Y = [X^1 \cdots X^q]
 \gamma_l \sim \text{&quot;Group-Multinomial&quot;}(1, \pi) \\
 \mathbf{b_l} \sim \mathcal{N}(\mathbf{0}, \sigma_{0l}^2 I_{p_j})
 \end{aligned}
-\]</span> where “Group-Multinomial” is a distribution that returns a binary vector with 1’s in the position of the group that is selected, group <span class="math inline">\(j\)</span> being selected with probability <span class="math inline">\(\pi_j\)</span>. (Note: The notation for <span class="math inline">\(\mathbf{b_l}\)</span> is a bit weird, since in one instance it is a vector of length <span class="math inline">\(p\)</span>, and the other it is a vector of length <span class="math inline">\(p_j\)</span>)</p>
+\]</span> where “Group-Multinomial” is a distribution that returns a binary vector with 1’s in the position of the group that is selected, group <span class="math inline">\(j\)</span> being selected with probability <span class="math inline">\(\pi_j\)</span>. (Note: The notation for <span class="math inline">\(\mathbf{b_l}\)</span> is a bit weird, since in one instance it is a vector of length <span class="math inline">\(\sum_{j=1}^q p_j\)</span>, and the other it is a vector of length <span class="math inline">\(p_j\)</span>)</p>
 </div>
 <div id="derivation-of-updates" class="section level2">
 <h2>Derivation of Updates</h2>
