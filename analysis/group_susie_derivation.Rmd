@@ -25,25 +25,25 @@ In order to remedy the issue, I introduce Group SuSiE below (name pending).
 
 # Group SuSiE
 ## Set-Up
-Instead of our standard design matrix $\mathbf{X} \in \mathbb{R}^{n \times p}$, suppose we have $p$ pre-defined groups of predictors, with $p_j, j \in \{1, \dots, p\}$ predictors in each group. Arrange these groups of predictors into separate design matrices, $\mathbf{X^j} \in \mathbb{R}^{n \times p_j}$. Then we can define our model as follows:
+In addition to our standard design matrix $\mathbf{X} \in \mathbb{R}^{n \times p}$, suppose we have $q$ pre-defined groups of predictors, with $p_j, j \in \{1, \dots, q\}$ predictors in each group. Arrange these groups of predictors into separate design matrices, $\mathbf{X^j} \in \mathbb{R}^{n \times p_j}$. Then we can define our model as follows:
 $$
 \begin{aligned}
-Y = [X^1 \cdots X^p]
+Y = [X^1 \cdots X^q]
 \begin{bmatrix}
 \beta^1 \\
-\vdots \\ \beta^p
+\vdots \\ \beta^q
 \end{bmatrix} + \epsilon \\
 \epsilon \sim \mathcal{N}(\mathbf{0}, \sigma^2 I_n) \\
 \begin{bmatrix}
 \beta^1 \\
-\vdots \\ \beta^p
+\vdots \\ \beta^q
 \end{bmatrix} = \sum_{l=1}^L \begin{bmatrix}
 \beta_l^1 \\
-\vdots \\ \beta_l^p
+\vdots \\ \beta_l^q
 \end{bmatrix} := \sum_{l=1}^L \beta_l \\
 \begin{bmatrix}
 \beta_l^1 \\
-\vdots \\ \beta_l^p
+\vdots \\ \beta_l^q
 \end{bmatrix} = \gamma_l \circ \mathbf{b_l} \\
 \gamma_l \sim \text{"Group-Multinomial"}(1, \pi) \\
 \mathbf{b_l} \sim \mathcal{N}(\mathbf{0}, \sigma_{0l}^2 I_{p_j})
@@ -53,7 +53,7 @@ where "Group-Multinomial" is a distribution that returns a binary vector with 1'
 (Note: The notation for $\mathbf{b_l}$ is a bit weird, since in one instance it is a vector of length $p$, and the other it is a vector of length $p_j$)
 
 ## Derivation of Updates
-As in regular SuSiE, we approximate the posterior distribution using variational Bayes, where each of the $L$ effects are independent, a posteriori. Below, we derive the CAVI updates for each effect, $\beta_l$. The notation can get a bit muddied. Below, I use $\mathbf{e^j} \in \mathbb{R}^p$ to refer to the binary vector with 1's in the positios of the variables include in group $j$, I use $\mathbf{c} \in \mathbb{R}^{p_j}$ to refer to the value for $\mathbf{b_l}$, and I use $\mathbf{c^j} \in \mathbb{R}^{p_j}$ to refer to the vector where all entries corresponding to variables outside of group $j$ are 0, and the sub-vector defined by taking the entries corresponding to the variables in group $j$ is $\mathbf{c}$.
+As in regular SuSiE, we approximate the posterior distribution using variational Bayes, where each of the $L$ effects are independent, a posteriori. Below, we derive the CAVI updates for each effect, $\beta_l$. The notation can get a bit muddied. Below, I use $\mathbf{e^j} \in \mathbb{R}^p$ to refer to the binary vector with 1's in the positions of the variables include in group $j$, I use $\mathbf{c} \in \mathbb{R}^{p_j}$ to refer to the value for $\mathbf{b_l}$, and I use $\mathbf{c^j} \in \mathbb{R}^{p_j}$ to refer to the vector where all entries corresponding to variables outside of group $j$ are 0, and the sub-vector defined by taking the entries corresponding to the variables in group $j$ is $\mathbf{c}$.
 
 $$
 \begin{aligned}
