@@ -50,7 +50,7 @@ Y = [X^1 \cdots X^q]
 \end{aligned}
 $$
 where "Group-Multinomial" is a distribution that returns a binary vector with 1's in the position of the group that is selected, group $j$ being selected with probability $\pi_j$.
-(Note: The notation for $\mathbf{b_l}$ is a bit weird, since in one instance it is a vector of length $p$, and the other it is a vector of length $p_j$)
+(Note: The notation for $\mathbf{b_l}$ is a bit weird, since in one instance it is a vector of length $\sum_{j=1}^q p_j$, and the other it is a vector of length $p_j$)
 
 ## Derivation of Updates
 As in regular SuSiE, we approximate the posterior distribution using variational Bayes, where each of the $L$ effects are independent, a posteriori. Below, we derive the CAVI updates for each effect, $\beta_l$. The notation can get a bit muddied. Below, I use $\mathbf{e^j} \in \mathbb{R}^p$ to refer to the binary vector with 1's in the positions of the variables include in group $j$, I use $\mathbf{c} \in \mathbb{R}^{p_j}$ to refer to the value for $\mathbf{b_l}$, and I use $\mathbf{c^j} \in \mathbb{R}^{p_j}$ to refer to the vector where all entries corresponding to variables outside of group $j$ are 0, and the sub-vector defined by taking the entries corresponding to the variables in group $j$ is $\mathbf{c}$.
