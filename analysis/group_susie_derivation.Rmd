@@ -93,8 +93,13 @@ Alternatively, it might be best to instead represent a categorical predictor wit
 ### Order-2 Trees
 A direct application of including categorical predictors with 3 groups is to extend SuSiE Stumps to include trees of order 2. We can represent the tree as a categorical variable with 3 groups.
 
-## Gene Set Enrichment (?)
-Another potential application of Group SuSiE could be gene set enrichment analysis. If we have pre-specified gene sets (e.g. GO terms), then we can group our variables (e.g. gene expression measurements) based on these gene sets.
+
+## Variables in a Tree Hierarchy
+Another application of Group SuSiE could be data with predictors that are arranged in a hierarchy. Suppose the variables are arranged in a directed tree, where each node signifies that the variable[s] at that node is/are subtypes of the variables at the ancestors to that node. In this case, each node would correspond to a group, which would contain the variable[s] at that node plus all variables from ancestors of that node.
+
+### Gene Set Enrichment (?)
+A particular application of Group SuSiE with hierarchical variables could be gene set enrichment analysis. If we have pre-specified gene sets (e.g. GO terms), then we can group our variables (e.g. gene expression measurements) based on these gene sets.
+
 
 ## Polynomials of Variables
 Another application could be to include higher-order terms of our variables (e.g. if our predictor is $x$, then we could include $x^2$, $x^3$, etc). As we learn in our standard linear regression classes, we should always include lower-order terms when we add higher-order terms. Thus, we can create groups of variables $G_j$ as:
