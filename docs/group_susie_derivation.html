@@ -411,7 +411,7 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-09-01
+<strong>Last updated:</strong> 2019-09-02
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -442,10 +442,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomandrewg3311GroupSuSiEtreeb1defb8ac802dfa4f467c0ec40ffb0e92838957etargetblankb1defb8a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/andrewg3311/Group_SuSiE/tree/b1defb8ac802dfa4f467c0ec40ffb0e92838957e" target="_blank">b1defb8</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomandrewg3311GroupSuSiEtree409a4124b4b60e17bf82e60a3f9a6ad2931fb61atargetblank409a412a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/andrewg3311/Group_SuSiE/tree/409a4124b4b60e17bf82e60a3f9a6ad2931fb61a" target="_blank">409a412</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomandrewg3311GroupSuSiEtreeb1defb8ac802dfa4f467c0ec40ffb0e92838957etargetblankb1defb8a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomandrewg3311GroupSuSiEtree409a4124b4b60e17bf82e60a3f9a6ad2931fb61atargetblank409a412a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -489,6 +489,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/andrewg3311/Group_SuSiE/blob/409a4124b4b60e17bf82e60a3f9a6ad2931fb61a/analysis/group_susie_derivation.Rmd" target="_blank">409a412</a>
+</td>
+<td>
+Andrew Goldstein
+</td>
+<td>
+2019-09-02
+</td>
+<td>
+Modifying notation so number of groups is now ‘q’ instead of ‘p’ (to avoid confusion w/ total number of variables)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/andrewg3311/Group_SuSiE/03183e9f6ccde477a4d4dff83630d6de1365e2df/docs/group_susie_derivation.html" target="_blank">03183e9</a>
+</td>
+<td>
+Andrew Goldstein
+</td>
+<td>
+2019-09-02
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -751,24 +785,24 @@ b_l \sim \mathcal{N}(0, \sigma_{ol}^2)
 <h1>Group SuSiE</h1>
 <div id="set-up" class="section level2">
 <h2>Set-Up</h2>
-<p>Instead of our standard design matrix <span class="math inline">\(\mathbf{X} \in \mathbb{R}^{n \times p}\)</span>, suppose we have <span class="math inline">\(p\)</span> pre-defined groups of predictors, with <span class="math inline">\(p_j, j \in \{1, \dots, p\}\)</span> predictors in each group. Arrange these groups of predictors into separate design matrices, <span class="math inline">\(\mathbf{X^j} \in \mathbb{R}^{n \times p_j}\)</span>. Then we can define our model as follows: <span class="math display">\[
+<p>In addition to our standard design matrix <span class="math inline">\(\mathbf{X} \in \mathbb{R}^{n \times p}\)</span>, suppose we have <span class="math inline">\(q\)</span> pre-defined groups of predictors, with <span class="math inline">\(p_j, j \in \{1, \dots, q\}\)</span> predictors in each group. Arrange these groups of predictors into separate design matrices, <span class="math inline">\(\mathbf{X^j} \in \mathbb{R}^{n \times p_j}\)</span>. Then we can define our model as follows: <span class="math display">\[
 \begin{aligned}
-Y = [X^1 \cdots X^p]
+Y = [X^1 \cdots X^q]
 \begin{bmatrix}
 \beta^1 \\
-\vdots \\ \beta^p
+\vdots \\ \beta^q
 \end{bmatrix} + \epsilon \\
 \epsilon \sim \mathcal{N}(\mathbf{0}, \sigma^2 I_n) \\
 \begin{bmatrix}
 \beta^1 \\
-\vdots \\ \beta^p
+\vdots \\ \beta^q
 \end{bmatrix} = \sum_{l=1}^L \begin{bmatrix}
 \beta_l^1 \\
-\vdots \\ \beta_l^p
+\vdots \\ \beta_l^q
 \end{bmatrix} := \sum_{l=1}^L \beta_l \\
 \begin{bmatrix}
 \beta_l^1 \\
-\vdots \\ \beta_l^p
+\vdots \\ \beta_l^q
 \end{bmatrix} = \gamma_l \circ \mathbf{b_l} \\
 \gamma_l \sim \text{&quot;Group-Multinomial&quot;}(1, \pi) \\
 \mathbf{b_l} \sim \mathcal{N}(\mathbf{0}, \sigma_{0l}^2 I_{p_j})
@@ -777,7 +811,7 @@ Y = [X^1 \cdots X^p]
 </div>
 <div id="derivation-of-updates" class="section level2">
 <h2>Derivation of Updates</h2>
-<p>As in regular SuSiE, we approximate the posterior distribution using variational Bayes, where each of the <span class="math inline">\(L\)</span> effects are independent, a posteriori. Below, we derive the CAVI updates for each effect, <span class="math inline">\(\beta_l\)</span>. The notation can get a bit muddied. Below, I use <span class="math inline">\(\mathbf{e^j} \in \mathbb{R}^p\)</span> to refer to the binary vector with 1’s in the positios of the variables include in group <span class="math inline">\(j\)</span>, I use <span class="math inline">\(\mathbf{c} \in \mathbb{R}^{p_j}\)</span> to refer to the value for <span class="math inline">\(\mathbf{b_l}\)</span>, and I use <span class="math inline">\(\mathbf{c^j} \in \mathbb{R}^{p_j}\)</span> to refer to the vector where all entries corresponding to variables outside of group <span class="math inline">\(j\)</span> are 0, and the sub-vector defined by taking the entries corresponding to the variables in group <span class="math inline">\(j\)</span> is <span class="math inline">\(\mathbf{c}\)</span>.</p>
+<p>As in regular SuSiE, we approximate the posterior distribution using variational Bayes, where each of the <span class="math inline">\(L\)</span> effects are independent, a posteriori. Below, we derive the CAVI updates for each effect, <span class="math inline">\(\beta_l\)</span>. The notation can get a bit muddied. Below, I use <span class="math inline">\(\mathbf{e^j} \in \mathbb{R}^p\)</span> to refer to the binary vector with 1’s in the positions of the variables include in group <span class="math inline">\(j\)</span>, I use <span class="math inline">\(\mathbf{c} \in \mathbb{R}^{p_j}\)</span> to refer to the value for <span class="math inline">\(\mathbf{b_l}\)</span>, and I use <span class="math inline">\(\mathbf{c^j} \in \mathbb{R}^{p_j}\)</span> to refer to the vector where all entries corresponding to variables outside of group <span class="math inline">\(j\)</span> are 0, and the sub-vector defined by taking the entries corresponding to the variables in group <span class="math inline">\(j\)</span> is <span class="math inline">\(\mathbf{c}\)</span>.</p>
 <p><span class="math display">\[
 \begin{aligned}
 q_l(\beta_l = \mathbf{c^j} \circ \mathbf{e^j}) \propto \exp\Bigg\{\mathbb{E}_{-q_l}\Big[\log p(\beta_l = \mathbf{c^j} \circ \mathbf{e^j}) + \log p(Y|X, \beta_l = \mathbf{c^j} \circ \mathbf{e^j})\Big]\Bigg\} \propto \\
