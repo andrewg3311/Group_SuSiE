@@ -442,10 +442,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomandrewg3311GroupSuSiEtree50ebe43432691d4032aca6106545c9c9d1b83378targetblank50ebe43a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/andrewg3311/Group_SuSiE/tree/50ebe43432691d4032aca6106545c9c9d1b83378" target="_blank">50ebe43</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomandrewg3311GroupSuSiEtreeb1defb8ac802dfa4f467c0ec40ffb0e92838957etargetblankb1defb8a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/andrewg3311/Group_SuSiE/tree/b1defb8ac802dfa4f467c0ec40ffb0e92838957e" target="_blank">b1defb8</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomandrewg3311GroupSuSiEtree50ebe43432691d4032aca6106545c9c9d1b83378targetblank50ebe43a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomandrewg3311GroupSuSiEtreeb1defb8ac802dfa4f467c0ec40ffb0e92838957etargetblankb1defb8a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -489,6 +489,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/andrewg3311/Group_SuSiE/blob/b1defb8ac802dfa4f467c0ec40ffb0e92838957e/analysis/group_susie_derivation.Rmd" target="_blank">b1defb8</a>
+</td>
+<td>
+Andrew Goldstein
+</td>
+<td>
+2019-09-02
+</td>
+<td>
+Adding a small section about general hierarchical variables
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/andrewg3311/Group_SuSiE/4e9fca54478c3fa46af5f561c12cc7da4152a751/docs/group_susie_derivation.html" target="_blank">4e9fca5</a>
+</td>
+<td>
+Andrew Goldstein
+</td>
+<td>
+2019-09-01
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -778,9 +812,13 @@ q_l(\beta_l = \mathbf{c^j} \circ \mathbf{e^j}) \propto \exp\Bigg\{\mathbb{E}_{-q
 <p>A direct application of including categorical predictors with 3 groups is to extend SuSiE Stumps to include trees of order 2. We can represent the tree as a categorical variable with 3 groups.</p>
 </div>
 </div>
-<div id="gene-set-enrichment" class="section level2">
-<h2>Gene Set Enrichment (?)</h2>
-<p>Another potential application of Group SuSiE could be gene set enrichment analysis. If we have pre-specified gene sets (e.g. GO terms), then we can group our variables (e.g. gene expression measurements) based on these gene sets.</p>
+<div id="variables-in-a-tree-hierarchy" class="section level2">
+<h2>Variables in a Tree Hierarchy</h2>
+<p>Another application of Group SuSiE could be data with predictors that are arranged in a hierarchy. Suppose the variables are arranged in a directed tree, where each node signifies that the variable[s] at that node is/are subtypes of the variables at the ancestors to that node. In this case, each node would correspond to a group, which would contain the variable[s] at that node plus all variables from ancestors of that node.</p>
+<div id="gene-set-enrichment" class="section level3">
+<h3>Gene Set Enrichment (?)</h3>
+<p>A particular application of Group SuSiE with hierarchical variables could be gene set enrichment analysis. If we have pre-specified gene sets (e.g. GO terms), then we can group our variables (e.g. gene expression measurements) based on these gene sets.</p>
+</div>
 </div>
 <div id="polynomials-of-variables" class="section level2">
 <h2>Polynomials of Variables</h2>
